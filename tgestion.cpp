@@ -12,7 +12,7 @@ tGestion::tGestion()
     monLecteur = new tLecteur();
     monClavier = new tclavier();
     monHistorique = new thistorique("data_historique.txt");
-    monMateriel = new tmateriel("A30","A27","B30");
+    monMateriel = new tmateriel("A30","A27","A28"); //Porte lampe diode
     monCompteMembre = new tcompteMembre("data_membre.bin");
 }
 
@@ -23,42 +23,78 @@ void tGestion::run()
     short compteur = 0;
 
     bool flagAdmin = false;
+    bool flagClient = false;
 
-    monLecteur->LireNumero(numeroCarteClient);
-    codeCarteClient = monClavier->LireCode();
-
-    if (monCompteMembre->Verifie(numeroCarteClient,codeCarteClient))
+    while (true)
     {
-        compteur = 0;
-        monMateriel->DeploquerPorte();
-        tempo();
-        monMateriel->EteindreLampe();
 
-        monHistorique->Ajouter(numeroCarteClient);
-    }
+        monLecteur->LireNumero(numeroCarteClient);//L'utilisateur passe sa carte
 
-    else if (!monCompteMembre->Verifie(numeroCarteClient,codeCarteClient))
-    {
-        compteur++;
-    }
-
-    else if (compteur == 3)
-    {
-        monMateriel->AllumerDiode();
-        while (strcmp(numeroCarteAdmin,"22227777") != 0 && flagAdmin)
+        while (compteur != 3 && !flagClient)
         {
-            printf("Porte bloquer passer la carte Admin \n");
-            monLecteur->LireNumero(numeroCarteAdmin);
-            codeCarteAdmin = monClavier->LireCode();
+            codeCarteClient = monClavier->LireCode();//Tappe le code pin
 
-            flagAdmin = monCompteMembre->Verifie(numeroCarteAdmin,codeCarteAdmin);
+            if(monCompteMembre->Verifie(numeroCarteClient,codeCarteClient) == 1)
+            {
+                printf("Le code Pin est correcte ! \n");
+                flagClient = true;
+            }
+            else if (monCompteMembre->Verifie(numeroCarteClient,codeCarteClient) == 0)
+            {
+                 printf("Le code Pin est incorrecte ! \n");
+                 monMateriel->AllumerLampe();
+                 tempo(2);
+                 monMateriel->EteindreLampe();
+            }
+
+            compteur++;
+            printf("Nombres de tentative(s) : %d\n",compteur);
 
         }
-        monMateriel->EteindreDiode();
+
+        if(compteur == 3)
+        {
+            printf("3 tentatives :( \n");
+            monMateriel->AllumerDiode();
+
+            while (strcmp(numeroCarteAdmin,"22227777") != 0 && !flagAdmin)
+            {
+                printf("Porte bloquer passer la carte Admin \n");
+                monLecteur->LireNumero(numeroCarteAdmin);
+                codeCarteAdmin = monClavier->LireCode();
+
+                flagAdmin = monCompteMembre->Verifie(numeroCarteAdmin,codeCarteAdmin);
+
+            }
+
+            flagAdmin = false;
+            monMateriel->EteindreDiode();
+        }
+
+        else if (flagClient)
+        {
+            printf("L'utilisateur rentre sur le terrain :) \n");
+            flagClient = false;
+
+            monMateriel->AllumerLampe();//Allume la lampe
+            monMateriel->OuvrirPorte(); //Débloque la porte
+            tempo(5);
+
+            monMateriel->EteindreLampe();//Eteint la lampe
+
+            tempo(5);
+
+            monMateriel->FermerPorte();
+
+            monHistorique->Ajouter(numeroCarteClient);//Ajoute à l'historique
+        }
+
+        compteur = 0;
     }
+
 }
 
-void tGestion::tempo()
+void tGestion::tempo(short seconds)
 {
-    sleep(5);
+    sleep(seconds);
 }

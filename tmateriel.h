@@ -15,12 +15,15 @@ private:
 public:
     tmateriel(char*,char*,char*);
 
-    bool AllumerLampe();
-    bool EteindreLampe();
-    bool AllumerDiode();
-    bool EteindreDiode();
+    void AllumerLampe();
+    void EteindreLampe();
+    void AllumerDiode();
+    void EteindreDiode();
 
     void DeploquerPorte();
+
+    void OuvrirPorte();
+    void FermerPorte();
 };
 
 #endif // TMATERIEL_H

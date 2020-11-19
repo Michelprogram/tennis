@@ -16,7 +16,7 @@ void tLecteur :: LireNumero(char *Num)
 
    strncpy(Num,Trame+1,strlen(Trame)-2);
    Num[strlen(Trame)-2]='\0';
-   printf("Carte Scanner");
+   printf("Carte Scanner \n");
 
 }
 

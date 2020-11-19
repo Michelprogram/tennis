@@ -11,10 +11,10 @@ all: run
 clean:
 	rm -rf *.o
 	rm -rf *~
-	rm run
+	rm $(Executable)
 
 run: tlecteur.o trs232.o tmateriel.o thistorique.o tgestion.o tcomptemembre.o tclavier.o FoxG20_gpio.o main.o
-	$(Linkeur) $(OptionsLinkeur) tlecteur.o trs232.o tmateriel.o thistorique.o tgestion.o tcomptemembre.o tclavier.o FoxG20_gpio.o main.o -o run
+	$(Linkeur) $(OptionsLinkeur) tlecteur.o trs232.o tmateriel.o thistorique.o tgestion.o tcomptemembre.o tclavier.o FoxG20_gpio.o main.o -o $(Executable)
 
 trs232.o: trs232.cpp
 	$(Compilateur) $(OptionsCompilateur) trs232.cpp -o trs232.o
@@ -43,3 +43,7 @@ FoxG20_gpio.o: FoxG20_gpio.cpp
 main.o: main.cpp
 	$(Compilateur) $(OptionsCompilateur) main.cpp -o main.o
 
+trans:
+	scp $(Executable) root@172.16.185.172:/home/dorian
+
+remake:clean all trans

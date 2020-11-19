@@ -19,68 +19,44 @@ tmateriel::tmateriel(char* porte,char* lampe,char* diode)
 
 }
 
-void tmateriel::DeploquerPorte()
-/*
- * Debloque la porte et allume la lampe
- */
-{
-    if (AllumerLampe())
-    {
-        sleep(5);
-        EteindreLampe();
-    }
-
-}
-
-bool tmateriel::AllumerLampe()
+void tmateriel::AllumerLampe()
 /*
  * Allume la lampe
  */
 {
     Lampe->Ecrire(1);
-
-    if (Lampe->Lire() == 1)
-        return true;
-
-    return false;
 }
 
-bool tmateriel::EteindreLampe()
+void tmateriel::EteindreLampe()
 /*
  * Eteint la lampe
  */
 {
     Lampe->Ecrire(0);
-
-    if (Lampe->Lire() == 0)
-        return true;
-
-    return false;
 }
 
-bool tmateriel::AllumerDiode()
+void tmateriel::AllumerDiode()
 /*
  * Allume la diode
  */
 {
     Diode->Ecrire(1);
-
-    if (Diode->Lire() == 1)
-        return true;
-
-    return false;
 }
 
-bool tmateriel::EteindreDiode()
+void tmateriel::EteindreDiode()
 /*
  * Eteint la diode
  */
 {
     Diode->Ecrire(0);
+}
 
-    if (Diode->Lire() == 0)
-        return true;
+void tmateriel::OuvrirPorte()
+{
+    Porte->Ecrire(1);
+}
 
-    return false;
-
+void tmateriel::FermerPorte()
+{
+    Porte->Ecrire(0);
 }

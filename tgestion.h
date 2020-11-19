@@ -22,7 +22,7 @@ public:
     tGestion();
 
     void run();
-    void tempo();
+    void tempo(short);
 };
 
 #endif // TGESTION_H

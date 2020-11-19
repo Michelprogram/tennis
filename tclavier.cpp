@@ -28,7 +28,7 @@ int tclavier::LireCode()
         }
 
     }
-    printf("Code bien reçu \n");
+    printf("Code PIN renseigner \n");
 
     return pin;
 
