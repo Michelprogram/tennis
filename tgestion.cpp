@@ -42,9 +42,9 @@ void tGestion::run()
             else if (monCompteMembre->Verifie(numeroCarteClient,codeCarteClient) == 0)
             {
                  printf("Le code Pin est incorrecte ! \n");
-                 monMateriel->AllumerLampe();
+                 monMateriel->AllumerDiode();
                  tempo(2);
-                 monMateriel->EteindreLampe();
+                 monMateriel->AllumerDiode();
             }
 
             compteur++;
@@ -55,7 +55,7 @@ void tGestion::run()
         if(compteur == 3)
         {
             printf("3 tentatives :( \n");
-            monMateriel->AllumerDiode();
+            monMateriel->AllumerLampe();
 
             while (strcmp(numeroCarteAdmin,"22227777") != 0 && !flagAdmin)
             {
@@ -68,7 +68,7 @@ void tGestion::run()
             }
 
             flagAdmin = false;
-            monMateriel->EteindreDiode();
+            monMateriel->AllumerLampe();
         }
 
         else if (flagClient)
